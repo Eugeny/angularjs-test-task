@@ -33,7 +33,7 @@ angular.module('todomvc')
 				completed: false
 			};
 
-			if (!newTodo.title) {
+			if (newTodo.title.length < 5) {
 				return;
 			}
 
