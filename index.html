@@ -6,6 +6,21 @@
 		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
 		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
 		<style>[ng-cloak] { display: none; }</style>
+		<style>
+			.clear, html .clear:active {
+				float: right;
+				position: relative;
+				line-height: 20px;
+				text-decoration: none;
+			}
+			.clear-completed, .clear-all {
+				float: none;
+			}
+			.clear-all:hover {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		</style>
 	</head>
 	<body ng-app="todomvc">
 		<ng-view></ng-view>
@@ -49,7 +64,12 @@
 							<a ng-class="{selected: status == 'completed'}" href="#/completed">Completed</a>
 						</li>
 					</ul>
-					<button class="clear-completed" ng-click="clearCompletedTodos()" ng-show="todos.length > remainingCount">Clear completed</button>
+					<span class="clear">
+						Clear:
+						<button class="clear-completed" ng-click="clearCompletedTodos()" ng-show="todos.length > remainingCount">completed</button>
+						<span ng-show="todos.length > remainingCount">/</span>
+						<button class="clear-all" ng-click="clearAllTodos()" ng-show="todos.length > 0">all</button>
+					</span>
 				</footer>
 			</section>
 			<footer class="info">

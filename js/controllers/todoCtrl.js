@@ -110,6 +110,10 @@ angular.module('todomvc')
 				});
 		};
 
+		$scope.clearAllTodos = function () {
+			store.clearAll();
+		};
+
 		$scope.clearCompletedTodos = function () {
 			store.clearCompleted();
 		};

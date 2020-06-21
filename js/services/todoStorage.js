@@ -33,6 +33,16 @@ angular.module('todomvc')
 				}
 			),
 
+			clearAll: function () {
+				var originalTodos = store.todos.slice(0);
+				store.todos.length = 0;
+
+				return store.api.delete(function () {
+				}, function error() {
+					angular.copy(originalTodos, store.todos);
+				});
+			},
+
 			clearCompleted: function () {
 				var originalTodos = store.todos.slice(0);
 
@@ -101,6 +111,16 @@ angular.module('todomvc')
 
 			_saveToLocalStorage: function (todos) {
 				localStorage.setItem(STORAGE_ID, JSON.stringify(todos));
+			},
+
+			clearAll: function () {
+				var deferred = $q.defer();
+				store.todos.length = 0;
+
+				store._saveToLocalStorage(store.todos);
+				deferred.resolve(store.todos);
+
+				return deferred.promise;
 			},
 
 			clearCompleted: function () {
