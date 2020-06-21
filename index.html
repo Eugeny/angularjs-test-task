@@ -50,8 +50,12 @@
 					</ul>
 				</section>
 				<footer class="footer" ng-show="todos.length" ng-cloak>
-					<span class="todo-count"><strong>{{remainingCount}}</strong>
+					<span class="todo-count">
+						<strong>{{remainingCount}}</strong>
 						<ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
+						<strong>{{todos.length}}</strong>
+						<ng-pluralize count="todos.length" when="{ one: 'item total', other: 'items total' }"></ng-pluralize>
+
 					</span>
 					<ul class="filters">
 						<li>
