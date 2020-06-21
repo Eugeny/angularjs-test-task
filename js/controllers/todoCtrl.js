@@ -37,6 +37,24 @@ angular.module('todomvc')
 				return;
 			}
 
+			var duplicates = todos.filter(function (todo) {
+				return todo.title === newTodo.title;
+			});
+
+			if (duplicates.length > 0) {
+				duplicates.forEach(function (todo) {
+					todo.completed = false;
+
+					store.put(todo, todos.indexOf(todo))
+						.then(function success() {}, function error() {
+							todo.completed = !todo.completed;
+						});
+				});
+
+				$scope.newTodo = '';
+				return;
+			}
+
 			$scope.saving = true;
 			store.insert(newTodo)
 				.then(function success() {
