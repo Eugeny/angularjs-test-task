@@ -37,7 +37,7 @@ angular.module('todomvc')
 				return;
 			}
 
-			var duplicates = $scope.unmarkDupes(newTodo);
+			var duplicates = $scope.markDupes(newTodo);
 
 			if (duplicates.length > 0) {
 				$scope.newTodo = '';
@@ -83,7 +83,7 @@ angular.module('todomvc')
 				return;
 			}
 
-			var duplicates = $scope.unmarkDupes(todo);
+			var duplicates = $scope.markDupes(todo);
 
 			if (duplicates.length > 1 || todo.title.length < 5) {
 				todo.title = '';
@@ -98,13 +98,13 @@ angular.module('todomvc')
 				});
 		};
 
-		$scope.unmarkDupes = function (todo) {
+		$scope.markDupes = function (todo) {
 			var duplicates = todos.filter(function (singleTodo) {
 				return todo.title === singleTodo.title;
 			});
 
 			duplicates.forEach(function (dupe) {
-				dupe.completed = false;
+				dupe.completed = todo.completed;
 
 				store.put(dupe, todos.indexOf(dupe))
 					.then(function success() {}, function error() {
