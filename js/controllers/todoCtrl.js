@@ -37,20 +37,9 @@ angular.module('todomvc')
 				return;
 			}
 
-			var duplicates = todos.filter(function (todo) {
-				return todo.title === newTodo.title;
-			});
+			var duplicates = $scope.unmarkDupes(newTodo);
 
 			if (duplicates.length > 0) {
-				duplicates.forEach(function (todo) {
-					todo.completed = false;
-
-					store.put(todo, todos.indexOf(todo))
-						.then(function success() {}, function error() {
-							todo.completed = !todo.completed;
-						});
-				});
-
 				$scope.newTodo = '';
 				return;
 			}
@@ -94,6 +83,12 @@ angular.module('todomvc')
 				return;
 			}
 
+			var duplicates = $scope.unmarkDupes(todo);
+
+			if (duplicates.length > 1 || todo.title.length < 5) {
+				todo.title = '';
+			}
+
 			store[todo.title ? 'put' : 'delete'](todo)
 				.then(function success() {}, function error() {
 					todo.title = $scope.originalTodo.title;
@@ -102,6 +97,23 @@ angular.module('todomvc')
 					$scope.editedTodo = null;
 				});
 		};
+
+		$scope.unmarkDupes = function (todo) {
+			var duplicates = todos.filter(function (singleTodo) {
+				return todo.title === singleTodo.title;
+			});
+
+			duplicates.forEach(function (dupe) {
+				dupe.completed = false;
+
+				store.put(dupe, todos.indexOf(dupe))
+					.then(function success() {}, function error() {
+						dupe.completed = !dupe.completed;
+					 });
+				});
+
+			return duplicates;
+		}
 
 		$scope.revertEdits = function (todo) {
 			todos[todos.indexOf(todo)] = $scope.originalTodo;
